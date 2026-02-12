@@ -16,7 +16,7 @@
   }
 
   const { scene } = useThrelte()
-  const cube = useGltf<CubeGltf>('/cube.glb')
+  const cube = useGltf<CubeGltf>('/cube-finther.glb')
   const env = useTexture('/oil-on-water.png', {
     transform(texture) {
       texture.mapping = EquirectangularReflectionMapping

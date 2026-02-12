@@ -1,9 +1,12 @@
 <script lang="ts">
   import { T } from '@threlte/core'
+  import { useTexture } from '@threlte/extras'
   import { SheetObject } from '@threlte/theatre'
   import KeyboardControls from './KeyboardControls.svelte'
   import { cubeGeometry } from './state'
-  import DissolveMaterial from './materials/DissolveMaterial.svelte'
+
+  // Load logo texture
+  const logoTexture = useTexture('/finther-img/logo-fintec.png')
 
   interface Props {
     key: string
@@ -13,7 +16,7 @@
 </script>
 
 <SheetObject {key}>
-  {#snippet children({ Transform, Sync, Declare })}
+  {#snippet children({ Transform, Sync })}
     <KeyboardControls>
       {#snippet children({ transform })}
         <Transform {...transform}>
@@ -24,32 +27,19 @@
                 dispose={false}
               />
             {/if}
-            <Declare
-              props={{
-                progress: 0,
-                noiseScale: 1
-              }}
-            >
-              {#snippet children(values)}
-                <DissolveMaterial
-                  progress={values.values.progress}
-                  scale={values.values.noiseScale}
-                  transparent
-                  roughness={0.418}
-                  metalness={0.6139}
-                  color="#ff1f00"
-                  emissive="#000105"
-                >
-                  <Sync
-                    color
-                    opacity
-                    emissive
-                    roughness
-                    metalness
-                  />
-                </DissolveMaterial>
-              {/snippet}
-            </Declare>
+            {#if $logoTexture}
+              <T.MeshStandardMaterial
+                map={$logoTexture}
+                roughness={0.4}
+                metalness={0.6}
+              >
+                <Sync
+                  opacity
+                  roughness
+                  metalness
+                />
+              </T.MeshStandardMaterial>
+            {/if}
           </T.Mesh>
         </Transform>
       {/snippet}
